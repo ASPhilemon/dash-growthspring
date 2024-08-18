@@ -1,0 +1,392 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&display=swap'); */
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+body{
+  font-family: 'Just Another Hand', cursive;
+  font-family: 'Lato', sans-serif;
+  background-color: #D9D9D9;
+  font-size: 16px;
+  overflow-y: scroll;
+}
+
+a{
+  text-decoration: none;
+ }
+ 
+ table{
+  white-space: nowrap;
+ }
+
+.offcanvas-md .nav-link{
+  padding: 10px 20px;
+}
+
+.profile{
+  height: 90px;
+  background-color: #143A61;
+  color: white;
+  font-size: 16px;
+}
+
+.profile div{
+  position: absolute;
+  /* left: 0;
+  right: 0;
+  margin: 0 auto; */
+  bottom: -16px;
+}
+
+.profile p{
+  margin-bottom: 23px;
+}
+
+.offcanvas-md{
+  min-height: 100vh;
+  overflow: auto;
+  background-color: white !important;
+}
+
+.navbar{
+  background-color: #ffd700;
+}
+
+.offcanvas-toggler{
+  border: none;
+}
+
+.nav-link{
+  color: #143A61;
+}
+
+
+.current-page, .current-page:hover{
+  background-color: gold !important;
+  font-weight: bold;
+  color: rgba(20, 59, 97, 1);
+
+}
+
+/* .accordion-button, .accordion-button:focus{
+  border: none;
+  box-shadow: none;
+  font-size: 19px !important;
+} */
+
+.tabular > :first-child{
+  width: 120px;
+}
+
+
+@media (max-width: 767px) {
+  .offcanvas-md{
+    max-width: 250px;
+  }
+}
+
+@media (min-width: 768px) {
+
+  .tabs-nav{
+    gap:50px;
+  }
+
+  .profile{
+    height: 120px;
+    font-size: 22px;
+  }
+  
+  .profile div{
+    bottom: -22px;
+  }
+
+  .profile img{
+    width: 110px;
+    height: 110px;
+  }
+
+  .profile p{
+    margin-bottom: 35px;
+  }
+}
+
+.btns-style-none button{
+  font-weight: bold;
+  background: none;
+  border: none;
+  color: black;
+  font-size: 14px;
+}
+ .btns-style-none {
+  max-width: 350px;
+ }
+ 
+
+
+
+ .card-a:hover{
+  background-color: gold !important;
+ }
+ 
+
+
+
+/* .nav{
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: auto;
+} */
+
+
+.form-select{
+  width: 120px;
+}
+
+.nav-pills{
+  background-color: white !important;
+  padding: 5px 5px;
+  border-radius: 25px;
+}
+
+.nav-pills .nav-link{
+  border-radius: 20px;
+}
+.nav-pills .nav-link.active{
+  background: rgb(20, 59, 97);
+  color: gold;
+}
+
+
+.summary-card .card-body{
+  background-color: rgb(20, 59, 97);
+  color: gold;
+}
+
+.whole-page{
+  min-height: 100vh;
+}
+
+.whole-page .tab-content{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.whole-page .tab-pane.active{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.whole-page .tab-pane > .row{
+  display: flex;
+  flex-grow: 1;
+}
+
+.whole-page .tab-pane.active .row .list-group{
+  background-color: white;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.display-item, .display-item:hover, .display-item:focus{
+  background-color: rgb(20, 59, 97);
+  color: gold;
+}
+
+.page{
+  transform: translateX(-30%);
+  transition: transform .6s ease-out;
+}
+
+.page-container{
+  overflow-x: hidden;
+}
+
+.animate-page{
+  transform: translateX(0);
+}
+
+.year-detail{
+  transition-delay: .2s;
+}
+
+
+
+
+
+
+
+/* 
+=================================================
+Tab Transition
+=================================================
+*/
+
+.tab-pane{
+  width: 100%;
+  position: relative;
+  opacity: 1 !important;
+  transition: transform .3s linear;
+  transition-delay: 0s !important;
+}
+
+.p-left{
+  transform: translateX(-25%);
+}
+.p-right{
+  transform: translateX(25%);
+}
+.tab-pane.fade.show{
+  transform: translateX(0);
+}
+/* 
+.nav-link{
+  transition: background-color .1s linear, color .1s linear;
+} */
+
+.tabs-links-container{
+  width: 100%;
+  overflow-x: auto !important;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.tabs-links-container .nav-item{
+ flex-shrink: 0 !important;
+}
+
+.card-title{
+  font-size: 1.3rem;
+}
+
+.card-text{
+  font-size: 1.1rem;
+}
+
+.dropdown-toggle, .dropdown-toggle:active, .dropdown-toggle:focus, .dropdown-toggle:hover{
+  background-color: #143A61 !important;
+  border-color: #143A61 !important;
+  color: gold !important;
+}
+
+.dropdown-item:active, .dropdown-item:hover{
+  cursor: pointer;
+  background-color: #143A61;
+  color: gold;
+}
+
+.card-header{
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  background-color: #143A61;
+  color: white;
+ 
+}
+
+.text-gold{
+  color: gold;
+}
+.text-primary{
+  color: #143A61 !important;
+}
+.text-primary-bs{
+  color: rgb(13 110 253) !important;  
+}
+.btn-primary{
+  background-color: #143A61 !important;
+  border-color: #143A61;
+}
+.btn-primary:disabled{
+  border: none !important;
+}
+.bg-gold{
+  background-color: gold;
+}
+
+/* 
+===========================================
+Log In Page
+===========================================
+ */
+ .login-page{
+  background-color: #053362;
+  background-color: #143A61;
+ }
+
+ .login-page > div{
+  min-height: 70vh;
+  width: 60vh;
+  margin: auto auto;
+  max-width: 100%;
+  min-width: 280px;
+ }
+
+ .login-page input{
+  font-size: 16px;
+ }
+
+
+ .display-6{
+  font-size: 1.5rem !important;
+ }
+
+ .card-title{
+  font-size: 1.2rem;
+  color: white;
+  opacity: .7;
+ }
+
+ .btn-login{
+  font-size: 18px;
+ }
+
+ .loading-page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background-color: #ffffff;
+  font-family: Arial, sans-serif;
+  flex-grow: 1;
+ }
+ .loading-container {
+  text-align: center;
+  color: #0c4d8d !important;
+  font-size: 40px;
+  font-weight: bold;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.loading-bar-container {
+  width: 300px;
+  height: 12px;
+  background-color: #0c4d8d; /* Navy blue */
+  border: 1px solid #0c4d8d;
+  overflow: hidden;
+  margin-top: 20px;
+  position: relative;
+}
+
+.loading-bar {
+  width: 10%;
+  height: 100%;
+  background: linear-gradient(to right, #ffd700, #ffcc00);
+}
+
+.loading-animation{
+  animation: load 0.8s linear forwards;
+}
+
+@keyframes load {
+  0% {
+    width: 10%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.logo-loading{
+  width: 250px;
+}
