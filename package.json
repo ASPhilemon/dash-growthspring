@@ -20,7 +20,7 @@
   },
   "scripts": {
     "dev": "react-scripts start",
-    "start": "serve -s -l 3004 ./build",
+    "start": "serve -s -l 3003 ./build",
     "build:prod": "react-scripts build",
     "build:stage": "react-scripts build",
     "test": "react-scripts test",
