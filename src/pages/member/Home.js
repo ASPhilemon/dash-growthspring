@@ -46,10 +46,9 @@ export default function Home(){
       <Col>
         <HomeCard
           main = {{title: 'Your Debt', value: toShortMoney(home.yourDebt) }}
-          left = {{title: 'Best Rate', value: home.bestRate }}
-          right = {{title: 'Max Limit For You', value: toShortMoney(home.maxLoanLimit) }}
+          left = {{title: 'Maximum Limit', value: home.maxLoanLimit }}
+          right = {{title: 'Available Amount', value: toShortMoney(home.LoanLimit) }}
           href = '/your-loans'
-          
         />
       </Col>
 
