@@ -375,7 +375,7 @@ Log In Page
 }
 
 .loading-animation{
-  animation: load 0.8s linear forwards;
+  animation: load 0.5s linear forwards;
 }
 
 @keyframes load {
