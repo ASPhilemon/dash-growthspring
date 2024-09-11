@@ -63,8 +63,8 @@ function App() {
                 />
                 <Route
                   path = "/profile"
-                  // element = { <Navigate to = '/' /> } 
-                  element = {<Profile/>}
+                  element = { <Navigate to = '/' /> } 
+                  // element = {<Profile/>}
                 />
                 <Route
                   path = "/club"
