@@ -65,7 +65,7 @@
 .cameraContainer video{
   object-fit: cover;
   width: 100vw;  /* Full viewport width */
-  height: calc(100vh - 120px); /* Full viewport height */
+  height: calc(100vh); /* Full viewport height */
 }
 .camera-control{
   display: block;
@@ -73,6 +73,5 @@
   bottom: 0;
   margin: 0 auto;
   width: 100%;
-  height: 120px;
   background-color: rgb(0, 0, 0);
 }
