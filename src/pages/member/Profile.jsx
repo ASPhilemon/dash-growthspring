@@ -113,7 +113,7 @@ function CameraControl(){
   return (
     <div className = {styles["camera-control"] + " shadow-lg"} >
       <div className="d-flex justify-content-center py-3 align-items-center">
-       <button className="p-5 p-md-4 rounded-circle" ></button>
+       <button className= { styles["btn-capture"] + " rounded-circle" } ></button>
       </div>
     </div>
   )
