@@ -194,8 +194,9 @@ a{
 }
 
 .page{
-  transform: translateX(-30%);
-  transition: transform .6s ease-out;
+  position: relative;
+  left: -30%;
+  transition: left .6s ease-out;
 }
 
 .page-container{
@@ -203,7 +204,7 @@ a{
 }
 
 .animate-page{
-  transform: translateX(0);
+  left: 0;
 }
 
 .year-detail{
@@ -226,18 +227,18 @@ Tab Transition
   width: 100%;
   position: relative;
   opacity: 1 !important;
-  transition: transform .3s linear;
+  transition: left .3s linear ;
   transition-delay: 0s !important;
 }
 
 .p-left{
-  transform: translateX(-25%);
+  left: -25%;
 }
 .p-right{
-  transform: translateX(25%);
+  left: 25%;
 }
 .tab-pane.fade.show{
-  transform: translateX(0);
+  left: 0;
 }
 /* 
 .nav-link{

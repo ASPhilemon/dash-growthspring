@@ -96,9 +96,9 @@ function Camera(){
 
   return(
     <div className= {styles.cameraContainer} >
-      <div className="bg-white">
+      <div>
         <video  style={{}} className="d-block text-center" ref = {videoRef} ></video>
-       { hasCameraPermission?  <button onClick={handleCapture} >Capture</button> : <p>Waiting for permission to use camera ...</p> }
+        <CameraControl/>
       </div>
   
       <canvas ref={canvasRef} ></canvas>
@@ -108,3 +108,11 @@ function Camera(){
   )
 }
 
+function CameraControl(){
+  return (
+    <div className = {styles["camera-control"] + " shadow-lg"} >
+      <button>capture</button>
+
+    </div>
+  )
+}
