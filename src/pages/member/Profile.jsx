@@ -97,6 +97,7 @@ function Camera(){
   return(
     <div className= {styles.cameraContainer} >
       <div>
+        <p className="text-white fw-bold mb-0  py-2 px-4" >Take Photo</p>
         <video  style={{}} className="d-block text-center" ref = {videoRef} ></video>
         <CameraControl/>
       </div>
@@ -112,7 +113,6 @@ function CameraControl(){
   return (
     <div className = {styles["camera-control"] + " shadow-lg"} >
       <button>capture</button>
-
     </div>
   )
 }
