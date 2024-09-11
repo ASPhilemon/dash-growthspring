@@ -25,8 +25,8 @@
                   <p className = "my-0 fw-bold"> {right.value} </p>
                 </div>
               </div>
-            <Link to = {href}>
-              <a className ="stretched-link" href = {href}></a>
+            <Link className ="stretched-link" to = {href}>
+      
             </Link>
             
             </Card.Body>

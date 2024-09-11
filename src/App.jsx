@@ -8,18 +8,17 @@ import { useMemberDashboard } from './contexts/MemberDashboardContext';
 import { ScrollToTop } from './components/ScrollToTop';
 import { NavBar } from './components/NavBar';
 import { SideBar } from './components/SideBar';
+import { LoadingDashboard } from './components/LoadingDasboard';
 
 
-
-//Member pages
+//Pages
 import Home from './pages/member/Home';
 import DepositsPayments from './pages/member/DepositsPayments';
 import YourPoints from './pages/member/YourPoints';
 import YourLoans from './pages/member/YourLoans';
 import YourCredits from './pages/member/YourCredits';
 import Club from './pages/member/Club';
-import LoadingMemberDashboard from './pages/member/LoadingMemberDashboard';
-
+import { Profile } from './pages/member/Profile';
 
 function App() {
   const { memberDashboard } = useMemberDashboard()
@@ -29,48 +28,46 @@ function App() {
   const handleShow = () => setShowSideBar(true);
 
   return (
+    memberDashboard ?
     <BrowserRouter>
       <ScrollToTop/>
       <Container fluid className = 'px-0'>
         <Row className = "gx-0">
-          { memberDashboard && <SideBar
+          { <SideBar
             showSideBar = {showSideBar}
             handleClose = {handleClose}
           /> }
-          <Col className='d-flex whole-page flex-column' md = {memberDashboard &&{offset:4}} lg = {memberDashboard && {offset:3}} >
-            {memberDashboard && <NavBar handleShow = {handleShow}/>}
+          <Col className='d-flex whole-page flex-column' md = {{offset:4}} lg = { {offset:3}} >
+            { <NavBar handleShow = {handleShow}/>}
             <div className = 'page-container  flex-grow-1 d-flex flex-column'>
               <Routes >
-
-                {/* Member Dashboard Routes */}
                 <Route
                   path = "/"
-                  element = { memberDashboard ? <Home /> : <Navigate to = '/load-member-dashboard' /> } 
+                  element = { <Home />  } 
                 />
                 <Route
                   path="/deposits-payments"
-                  element = { memberDashboard ? <DepositsPayments /> : <Navigate to = '/load-member-dashboard' /> }  
+                  element = { <DepositsPayments /> }  
                 />
                 <Route
                   path = "/your-points"
-                  element = { memberDashboard ? <YourPoints /> : <Navigate to = '/load-member-dashboard' /> }  
+                  element = { <YourPoints /> }  
                 />
                 <Route
                   path = "/your-loans"
-                  element =  {memberDashboard ? <YourLoans /> : <Navigate to = '/load-member-dashboard' />}  
+                  element =  {<YourLoans /> }  
                 />
                 <Route
                   path = "/your-credits"
-                  element =  { memberDashboard ? <YourCredits /> : <Navigate to = '/load-member-dashboard' /> }  
+                  element =  { <YourCredits /> }  
                 />
-                
+                <Route
+                  path = "/profile"
+                  element = { <Navigate to = '/' /> } 
+                />
                 <Route
                   path = "/club"
-                  element = { memberDashboard ? <Club /> : <Navigate to = '/load-member-dashboard' /> } 
-                />
-                <Route
-                  path = "/load-member-dashboard"
-                  element = { memberDashboard ? <Navigate to = '/' /> : <LoadingMemberDashboard/> } 
+                  element = { <Club /> } 
                 />
                 
                 {/*Not Found*/}
@@ -83,8 +80,8 @@ function App() {
           </Col>
         </Row>
       </Container>
-    </BrowserRouter>
-    
+    </BrowserRouter> :
+    <LoadingDashboard/>
   );
 }
 

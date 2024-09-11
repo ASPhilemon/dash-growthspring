@@ -1,0 +1,64 @@
+.profile-header{
+  position: relative;
+  height: 180px;
+  background-color: #143A61;
+}
+
+.border-container{
+  width: 180px;
+  height: 180px;
+  position: absolute;
+  bottom: -30%;
+  left: calc(50% - 90px);
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 5px;
+}
+
+
+.border-container img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+/* Rotating border */
+.border-container::before {
+  content: '';                   /* Necessary for pseudo-element */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 5px solid #3498db;
+  border-color: rgb(233, 225, 16);
+  border-right-color: transparent;
+  border-top-color: transparent;
+  border-radius: 50%;            /* To create a circular border */
+  box-sizing: border-box;        /* Ensure padding doesn't affect the size */
+  animation: rotate 1s ease-in-out infinite; /* Animation to rotate */
+
+}
+
+/* Keyframes for rotating animation */
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);     /* Start rotation at 0 degrees */
+  }
+  100% {
+    transform: rotate(360deg);   /* End rotation at 360 degrees */
+  }
+}
+
+.cameraContainer{
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: green;
+
+}

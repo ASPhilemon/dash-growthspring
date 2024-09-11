@@ -1,6 +1,7 @@
 import { Nav, Offcanvas} from 'react-bootstrap';
 import { LinkContainer} from 'react-router-bootstrap';
 import { useMemberDashboard } from '../contexts/MemberDashboardContext';
+import { Link } from 'react-router-dom';
 
 export function SideBar({showSideBar, handleClose}) {
  
@@ -16,12 +17,12 @@ export function SideBar({showSideBar, handleClose}) {
       className = "px-0 py-0 col-md-4 col-lg-3 position-fixed shadow"
     >
       <Offcanvas.Body className = "flex-column px-0 py-0">
-        <Profile />
+        <Profile handleClose={handleClose} />
         <PageLinks handleClose = {handleClose} />
         <div>
           <a target="_blank" href="https://discounts.growthspringers.com" className="btn btn-sm ms-3 mt-2 px-2 fw-bold btn-warning ">
             Discounts
-            <i class=" ms-2 text-dark fw-bold bi bi-arrow-up-right"></i>
+            <i className=" ms-2 text-dark fw-bold bi bi-arrow-up-right"></i>
           </a>
         </div>
     
@@ -31,7 +32,7 @@ export function SideBar({showSideBar, handleClose}) {
             <a className='mt-3 text-primary-bs fw-bold ms-4 me-3 h6' href="https://admin.growthspringers.com">
               Admin Dashboard 
             </a>
-            <i class="bi bi-arrow-up-right"></i>
+            <i className="bi bi-arrow-up-right"></i>
           </div>
         }
       
@@ -44,7 +45,7 @@ export function SideBar({showSideBar, handleClose}) {
   );
 }
 
-function Profile(){
+function Profile({handleClose}){
   const { memberDashboard } = useMemberDashboard()
   const user = memberDashboard.user
   const names = user.fullName.split(' ')
@@ -56,14 +57,18 @@ function Profile(){
     
     <section className="profile position-relative d-flex ">
       <div className="d-flex align-items-end col-12 overflow-x-hidden px-3">
+      <Link to={"/profile"} onClick={handleClose} >
         <img
-            src = { user.photoURL? `${API + '/' + user.photoURL}` : '/img/defaultDP.jpg'}
-            width='80px'
-            height='80px'
-            className='rounded-circle me-2'
-            alt="Ariko"
+          src = { user.photoURL? `${API + '/' + user.photoURL}` : user.defaultPhoto}
+          width='80px'
+          height='80px'
+          className='rounded-circle me-2'
+          alt=""
         />
-        <p className='display-6 px-1 text-gold overflow-x-hidden d-inline-block col-7 text-truncate'>{displayName}</p>
+      </Link>
+      <Link onClick={handleClose} className='display-6 px-1 text-gold overflow-x-hidden d-inline-block text-truncate' to={"/profile"} >
+        <p className='d-inline-block' >{displayName}</p>
+      </Link>
       </div>
     </section>
   )
@@ -104,7 +109,7 @@ function PageLinks({handleClose}){
       {
         pages.map((page)=>{
           return (
-            <LinkContainer to = {page.linkUrl} activeClassName = "current-page" >
+            <LinkContainer key={page.linkUrl} to = {page.linkUrl} activeClassName = "current-page" >
               <Nav.Link onClick = {()=> handleClose()} eventKey = {page.linkUrl} > {page.linkText} </Nav.Link>
             </LinkContainer>
           )

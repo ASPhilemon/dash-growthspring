@@ -19,7 +19,7 @@ export function NavBar({handleShow}){
         </Button>
        
         {/* GrowthSping Logo */}
-        <LinkContainer to="/" className = ""  >
+        <LinkContainer to="/" className = "ms-auto"  >
           <Navbar.Brand href="/" className=' py-0'>
             <img
               src="/img/logo.png"

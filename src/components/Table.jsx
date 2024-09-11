@@ -2,7 +2,7 @@
 export default function Table({head, body}){
   let tableHead;
   if (head){
-    tableHead = head.map((item)=> <th scope="col"> { item } </th>)
+    tableHead = head.map((item, index)=> <th key={index} scope="col"> { item } </th>)
   }
   let tableRows = []
   body.forEach((row)=>{

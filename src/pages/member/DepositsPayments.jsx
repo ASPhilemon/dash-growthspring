@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import {Tabs, Tab, ListGroup, Row, Col, Dropdown } from "react-bootstrap";
 import Table from "../../components/Table";
 import TitleValueCard from "../../components/TitleValueCard";
@@ -102,6 +102,7 @@ function DepositsDesktop({summary, deposits, displayYear, setDisplayYear}){
           {
             deposits.map((yearDeposits) =>
               <ListGroup.Item
+              key={yearDeposits.year}
                 action
                 className = { yearDeposits.year == displayYear ? baseClass + 'display-item' : baseClass }
                 onClick = {()=> setDisplayYear(yearDeposits.year) }
@@ -185,7 +186,7 @@ function DepositsMobile({summary, deposits, displayYear, setDisplayYear}){
             {
               deposits.map((yearDeposits)=>{
                 return (
-                  <>
+                  <Fragment key={yearDeposits.year} >
                     <Dropdown.Item eventKey = { yearDeposits.year }>
                       <div className = "d-flex justify-content-between px-2 py-2 w-100">
                         <span> {yearDeposits.year} </span>
@@ -193,7 +194,7 @@ function DepositsMobile({summary, deposits, displayYear, setDisplayYear}){
                       </div>
                     </Dropdown.Item>
                     <hr className="my-0 py-0" />
-                  </>
+                  </Fragment>
                 )
               })
             }
@@ -286,6 +287,7 @@ function PaymentsDesktop({summary, payments, displayYear, setDisplayYear}){
           {
             payments.map((yearPayments) =>
               <ListGroup.Item
+              key={yearPayments.year}
                 action
                 className = { yearPayments.year == displayYear ? baseClass + 'display-item' : baseClass }
                 onClick = {()=> setDisplayYear(yearPayments.year) }
@@ -363,7 +365,7 @@ function PaymentsMobile({summary, payments, displayYear, setDisplayYear}){
             {
               payments.map((yearPayments)=>{
                 return (
-                  <>
+                  <Fragment key={yearPayments.year} >
                     <Dropdown.Item eventKey = { yearPayments.year }>
                       <div className = "d-flex justify-content-between px-2 py-2 w-100">
                         <span> {yearPayments.year} </span>
@@ -371,7 +373,7 @@ function PaymentsMobile({summary, payments, displayYear, setDisplayYear}){
                       </div>
                     </Dropdown.Item>
                     <hr className="my-0 py-0" />
-                  </>
+                  </Fragment>
                 )
               })
             }
