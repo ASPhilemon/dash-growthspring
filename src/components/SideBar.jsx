@@ -49,24 +49,28 @@ function Profile({handleClose}){
   const { memberDashboard } = useMemberDashboard()
   const user = memberDashboard.user
   const names = user.fullName.split(' ')
-  const displayName = names[names.length - 1]
+  const displayName = user.displayName? user.displayName.split(" ")[0]: names[names.length - 1]
 
   const API = process.env.REACT_APP_RESOURCE_SERVER_URL
+  let imgSrc = user.defaultPhoto
+  if (user.photoURL){
+    imgSrc = user.photoURL.startsWith("data")? user.photoURL: API + '/' + user.photoURL
+  }
   
   return(
     
     <section className="profile position-relative d-flex ">
       <div className="d-flex align-items-end col-12 overflow-x-hidden px-3">
-      <Link to={"/profile"} onClick={handleClose} >
+      <Link to={"/account"} onClick={handleClose} >
         <img
-          src = { user.photoURL? `${API + '/' + user.photoURL}` : user.defaultPhoto}
+          src = { imgSrc}
           width='80px'
           height='80px'
           className='rounded-circle me-2'
           alt=""
         />
       </Link>
-      <Link onClick={handleClose} className='display-6 px-1 text-gold overflow-x-hidden d-inline-block text-truncate' to={"/profile"} >
+      <Link onClick={handleClose} className='display-6 px-1 text-gold overflow-x-hidden d-inline-block text-truncate' to={"/account"} >
         <p className='d-inline-block' >{displayName}</p>
       </Link>
       </div>
@@ -80,6 +84,10 @@ function PageLinks({handleClose}){
     {
       linkText: 'Home',
       linkUrl: '/'
+    }, 
+    {
+      linkText: 'Account',
+      linkUrl: '/account'
     }, 
     {
       linkText: 'Deposits & Payments',

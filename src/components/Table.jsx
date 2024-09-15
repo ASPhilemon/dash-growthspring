@@ -2,13 +2,13 @@
 export default function Table({head, body}){
   let tableHead;
   if (head){
-    tableHead = head.map((item, index)=> <th key={index} scope="col"> { item } </th>)
+    tableHead = head.map((item, index)=> <th key={index} scope="col">{ item }</th>)
   }
   let tableRows = []
   body.forEach((row)=>{
     let rowItems = []
     row.forEach((tableData)=>{
-      rowItems.push(<td> {tableData} </td>)
+      rowItems.push(<td>{tableData}</td>)
     })
     tableRows.push(<tr>{rowItems}</tr>)
   })

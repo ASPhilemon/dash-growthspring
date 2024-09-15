@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useMemberDashboard } from './contexts/MemberDashboardContext';
 
-
 //Components
 import { ScrollToTop } from './components/ScrollToTop';
 import { NavBar } from './components/NavBar';
@@ -18,7 +17,7 @@ import YourPoints from './pages/member/YourPoints';
 import YourLoans from './pages/member/YourLoans';
 import YourCredits from './pages/member/YourCredits';
 import Club from './pages/member/Club';
-import { Profile } from './pages/member/Profile';
+import { Account } from './pages/member/Account';
 
 function App() {
   const { memberDashboard } = useMemberDashboard()
@@ -62,9 +61,9 @@ function App() {
                   element =  { <YourCredits /> }  
                 />
                 <Route
-                  path = "/profile"
-                  element = { <Navigate to = '/' /> } 
-                  // element = {<Profile/>}
+                  path = "/account"
+                  // element = { <Navigate to = '/' /> } 
+                  element = {<Account/>}
                 />
                 <Route
                   path = "/club"
