@@ -1,15 +1,15 @@
 .profile-header{
   position: relative;
-  height: 100px;
+  height: 150px;
   background-color: #143A61;
 }
 
 .border-container{
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   position: absolute;
   bottom: -30%;
-  left: calc(50% - 50px);
+  left: calc(50% - 75px);
   border-radius: 50%;
   overflow: hidden;
   padding: 0px;

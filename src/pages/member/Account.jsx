@@ -48,12 +48,14 @@ export function Account(){
       />
 
       <AccountUpdateFeedback setAccountUpdateFeedback = { setAccountUpdateFeedback } feedback = { accountUpdateFeedback }  />
-      <ProfilePhotoFull
-        show = {activeUI.includes("profile-photo")}
-        imgSrc = { user.photoURL.startsWith("data")? user.photoURL: API + "/" + user.photoURL}
-        handleChangeActiveUI = {handleChangeActiveUI}
-        activeUI = {activeUI}
-      />
+      { user.photoURL &&
+        <ProfilePhotoFull
+          show = {activeUI.includes("profile-photo")}
+          imgSrc = { user.photoURL.startsWith("data")? user.photoURL: API + "/" + user.photoURL}
+          handleChangeActiveUI = {handleChangeActiveUI}
+          activeUI = {activeUI}
+        />
+      }
 
     </main>
   )
@@ -347,7 +349,7 @@ function AccountInfo({user, handleChangeUser, setAccountUpdateFeedback}){
     if (status === "editing") nameRef.current.focus()
   }, [status])
   return (
-    <section className = { styles["account-form"] + " py-4 px-3 px-md-5 mt-3"}>
+    <section className = { styles["account-form"] + " py-4 px-3 px-md-5 mt-5"}>
       <div className= { styles["account-form-buttons"] + " d-flex justify-content-between mb-3 col-md-10"}>
         <h4 className="fw-light">Account Info</h4>
         {
@@ -386,7 +388,7 @@ function AccountInfo({user, handleChangeUser, setAccountUpdateFeedback}){
         }
       </div>
       <form ref={formRef} onSubmit = {handleSubmit} >
-        <div className="mb-3">
+        <div className="mb-4">
           <h6 className="fw-bold mb-1">Name</h6>
           { !status &&
             <p className="fw-light py-1" >
@@ -399,13 +401,13 @@ function AccountInfo({user, handleChangeUser, setAccountUpdateFeedback}){
               required
               ref = {nameRef}
               disabled = {status ==="loading"}
-              name="displayName" size="sm" type="text"
+              name="displayName"  type="text"
               defaultValue = {user.displayName || user.fullName.split(" ")[0]}
-              className="px-0"
+              className="px-0 mb-2 d-block"
           />
           }
         </div>
-        <div className="mb-3">
+        <div className="mb-4">
           <h6 className="fw-bold mb-1">Phone Contact</h6>
           { !status &&
             <p className="fw-light mb-0 py-1" >
@@ -417,15 +419,15 @@ function AccountInfo({user, handleChangeUser, setAccountUpdateFeedback}){
             <Form.Control
               disabled = {status ==="loading"}
               required
-              name="phoneContact" size="sm" type="tel"
+              name="phoneContact" type="tel"
               pattern="[0-9]{10}"
               defaultValue = {user.phoneContact || ""}
-              className="px-0"
+              className="px-0 mb-1"
           />
           }
         </div>
-        <div className="mb-3">
-          <h6 className="fw-bold mb-1">Email Address</h6>
+        <div className="mb-4">
+          <h6 className="fw-bold">Email Address</h6>
           { !status &&
             <p className="fw-light mb-0 py-1" >
               {user.email}
@@ -436,9 +438,9 @@ function AccountInfo({user, handleChangeUser, setAccountUpdateFeedback}){
             <Form.Control
               readOnly
               disabled = {status ==="loading"}
-              name="email" size="sm" type="text"
+              name="email" type="text"
               defaultValue = {user.email + "  [Read-Only]"}
-              className="px-0"
+              className="px-0 mb-1"
           />
           }
         </div>
@@ -454,7 +456,7 @@ function AccountInfo({user, handleChangeUser, setAccountUpdateFeedback}){
             type="switch"
             name="alerts"
             id="custom-switch"
-            label="Toggle alerts"
+            label="Toggle"
             defaultChecked = {user.alerts}
             disabled = {status ==="loading"}
           />
