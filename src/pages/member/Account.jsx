@@ -294,7 +294,7 @@ function ProfilePhotoFull({imgSrc, handleChangeActiveUI, activeUI, show}){
           </Modal.Title>
           <button
             onClick={()=> handleChangeActiveUI(["profile-photo", "source-picker"])}
-            className = { styles["edit-photo-btn"] + " ms-auto pt-1 pb-2 ps-2 px-2 me-4 border-0 bg-dark"}>
+            className = { styles["edit-photo-btn"] + " ms-auto p-2 px-3 rounded  me-4 border-0 bg-dark"}>
             <PencilFill />
           </button>
         </Modal.Header>

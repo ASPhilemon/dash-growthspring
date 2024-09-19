@@ -131,8 +131,6 @@
 }
 .edit-photo-btn:active{
   background-color: grey !important;
-  border-radius: 2px;
-  border-color: green;
 }
 
 
