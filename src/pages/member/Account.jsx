@@ -8,7 +8,7 @@ import { Modal,  Offcanvas, Toast, ToastContainer, Button, Spinner, Form } from 
 import { CameraFill, Images, Trash3Fill, PencilFill } from "react-bootstrap-icons";
 
 export function Account(){
-  useLogger('Profile')
+  useLogger('Account')
   const hasTransitionedIn = useTransition()
   const [activeUI, setActiveUI] = useState([])
   const allUI =  ["account", "loading", "source-picker", "profile-photo"]
