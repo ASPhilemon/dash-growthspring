@@ -247,14 +247,14 @@ function ImageSourcePicker({activeUI, setAccountUpdateFeedback, handleChangeActi
             style = {{display: "none"}}
             name="profile-photo"
           />
-          <label style={{cursor: "pointer"}} htmlFor="photo-picker" >
+          <label className="p-1" style={{cursor: "pointer"}} htmlFor="photo-picker" >
             <Images className="d-block mx-auto mb-3" size = {20} />
             Gallery
           </label>
 
           <button
             disabled = {!hasPhoto}
-            className="ms-auto"
+            className="ms-auto p-1"
             onClick = { handleDeletePhoto }
           >
             <Trash3Fill  className="d-block mx-auto mb-3" size = {20} />
@@ -294,7 +294,7 @@ function ProfilePhotoFull({imgSrc, handleChangeActiveUI, activeUI, show}){
           </Modal.Title>
           <button
             onClick={()=> handleChangeActiveUI(["profile-photo", "source-picker"])}
-            className = "ms-auto me-4 border-0 bg-dark">
+            className = { styles["edit-photo-btn"] + " ms-auto pt-1 pb-2 ps-2 px-2 me-4 border-0 bg-dark"}>
             <PencilFill />
           </button>
         </Modal.Header>

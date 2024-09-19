@@ -79,6 +79,11 @@
   border: none;
   background: none;;
 }
+.source-picker-buttons button:active:not(:disabled), .source-picker-buttons label:active{
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+}
+
 
 .image-resize-container{
   max-width: 600px;
@@ -121,7 +126,14 @@
 
 
 
-
+.edit-photo-btn{
+  border: none;
+}
+.edit-photo-btn:active{
+  background-color: grey !important;
+  border-radius: 2px;
+  border-color: green;
+}
 
 
 
