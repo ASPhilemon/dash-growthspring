@@ -487,8 +487,6 @@ function AccountInfo({user, handleChangeUser, setAccountUpdateFeedback}){
 
 
 
-
-
 // function ImageResizer({handleChangeActiveUI, show}){
 
 //   return(
