@@ -24,7 +24,7 @@ export default function Home(){
       <Col>
         <HomeCard
           main = {{ title: 'Your Worth', value: toShortMoney(home.yourWorth) }}
-          left = {{ title: 'Risk', value: home.profits }}
+          left = {{ title: 'Your % of Profits', value: home.profits }}
           right = {{ title: 'Savings This Year', value: toShortMoney(home.thisYearSavings) }}
           href = '/deposits-payments'
           bg = 'bg-your-worth'
