@@ -24,7 +24,7 @@ export default function Home(){
       <Col>
         <HomeCard
           main = {{ title: 'Your Worth', value: toShortMoney(home.yourWorth) }}
-          left = {{ title: 'Risk', value: home.risk }}
+          left = {{ title: 'Risk', value: home.profits }}
           right = {{ title: 'Savings This Year', value: toShortMoney(home.thisYearSavings) }}
           href = '/deposits-payments'
           bg = 'bg-your-worth'
@@ -46,8 +46,8 @@ export default function Home(){
       <Col>
         <HomeCard
           main = {{title: 'Your Debt', value: toShortMoney(home.yourDebt) }}
-          left = {{title: 'Maximum Limit', value: toShortMoney(Math.floor(home.maxLoanLimit)) }}
-          right = {{title: 'Available Amount', value: toShortMoney(Math.floor(home.LoanLimit)) }}
+          left = {{title: 'Maximum Limit - Loans', value: toShortMoney(Math.floor(home.maxLoanLimit)) }}
+          right = {{title: 'Club Contribution', value: toShortMoney(Math.floor(home.fromClub)) }}
           href = '/your-loans'
         />
       </Col>
