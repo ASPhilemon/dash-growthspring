@@ -29,7 +29,7 @@ export default function Home(){
               value: (
                 <span>
                   <span style={{marginRight: '8px' }}>{home.profits}</span>
-                  <span style={{ color: 'green' }}>({toShortMoney(home.profitsProjection)})</span>
+                  <span style={{ color: 'blue' }}>({toShortMoney(home.profitsProjection)})</span>
                 </span>
               ),
             }}
