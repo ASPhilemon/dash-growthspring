@@ -315,8 +315,8 @@ function EndedLoansDesktop({summary, loans, displayLoanId, setDisplayLoanId}){
     <Row className = "gx-0 column-gap-2">
       <Col className = "col-4 d-flex flex-column">
         <TitleValueCard
-          title = {"Current Debt"}
-          value = {`UGX ${summary.currentDebt.toLocaleString()}`}
+          title = {"Total Ended Loans"}
+          value = {`UGX ${summary.oldDebt.toLocaleString()}`}
         />
         <ListGroup variant = "flush" className = 'mt-2'> 
           {
@@ -381,8 +381,8 @@ function EndedLoansMobile({summary, loans, displayLoanId, setDisplayLoanId}){
   return(
     <div className="d-flex flex-column flex-grow-1">
      <TitleValueCard
-        title = {"Current Debt"}
-        value = {`UGX ${summary.currentDebt.toLocaleString()}`}
+        title = {"Total Ended Loans"}
+        value = {`UGX ${summary.oldDebt.toLocaleString()}`}
       />
       <div className="bg-white pt-2 px-2 my-1 flex-grow-1">
         <p className = "mb-3 px-1">Select loan to display</p>
