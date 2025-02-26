@@ -21,6 +21,7 @@ import { Account } from './pages/member/Account';
 
 function App() {
   const { memberDashboard } = useMemberDashboard()
+  console.log(memberDashboard)
 
   const [showSideBar, setShowSideBar] = useState(false);
   const handleClose = () => setShowSideBar(false);

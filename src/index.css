@@ -312,7 +312,7 @@ Log In Page
  */
  .login-page{
   background-color: #053362;
-  background-color: #143A61;
+  background-color: rgb(20, 58, 97);
  }
 
  .login-page > div{
@@ -390,4 +390,23 @@ Log In Page
 
 .logo-loading{
   width: 250px;
+}
+
+.btn-share-points{
+  position: absolute;
+  top: 5px;
+  right: 30px;
+}
+.share-points-form{
+  background-color: rgba(158, 195, 232, 0.1);
+  padding: 30px;
+  border-radius: 5px;
+}
+
+.status-toast{
+  position: fixed;
+  bottom: 50%;
+  z-index: 1000;
+  color: white;
+  text-align: center;
 }

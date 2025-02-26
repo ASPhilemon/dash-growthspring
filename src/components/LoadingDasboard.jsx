@@ -56,7 +56,7 @@ async function fetchMemberDashboard(setIsPending){
   const memberDashboard = await axios.get(RESOURCE_API + '/homepage-data-opt', {
     responseType: 'json',
     withCredentials: true,
-    timeout: 15000,
+    timeout: 30000,
     headers: {
         'Content-Type': 'application/json'
     }
@@ -74,9 +74,24 @@ async function updateMemberData(setIsPending, setMemberDashboard, setFetchError)
   try{
     const memberData = await fetchMemberDashboard(setIsPending)
     memberData.user.defaultPhoto = defaultPhoto
-    setMemberDashboard(memberData)
+    let pointsEarned = memberData.pointsEarned
+    let pointsEarnedSummary = memberData.summary.pointsEarned
+    let members = memberData.members
+    if (!pointsEarned){
+      pointsEarned = memberData.points
+    }
+    if (!pointsEarnedSummary){
+      pointsEarnedSummary = memberData.summary.points
+    }
+
+    if (!members){
+      members = ["Omodo", 'Blaise']
+    }
+     
+    setMemberDashboard({...memberData, members, pointsEarned, summary: {...memberData.summary, pointsEarned: pointsEarnedSummary}})
   } catch(err){
     console.log(err)
+
     if (err.code === 'ECONNABORTED'){
       setFetchError("Error: Request timeout out")
     } else {

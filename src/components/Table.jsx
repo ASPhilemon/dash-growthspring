@@ -7,8 +7,8 @@ export default function Table({head, body}){
   let tableRows = []
   body.forEach((row)=>{
     let rowItems = []
-    row.forEach((tableData)=>{
-      rowItems.push(<td>{tableData}</td>)
+    row.forEach((tableData, index)=>{
+      rowItems.push(<td key={index} >{tableData}</td>)
     })
     tableRows.push(<tr>{rowItems}</tr>)
   })
