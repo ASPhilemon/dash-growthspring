@@ -18,7 +18,8 @@ export function useSubmitForm({url, method = "POST", beforeSubmit, onSuccess = (
       try {
         const res = await fetch(url, {
           method: method,
-          body: JSON.stringify(formData)
+          body: JSON.stringify(formData),
+          credentials: "include"
         })
         const data = await res.json()
         if (res.ok){

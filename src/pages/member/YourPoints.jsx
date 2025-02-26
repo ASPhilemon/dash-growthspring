@@ -27,8 +27,10 @@ export default function Points(){
   }
 
   function onSuccess(data, form){
-    memberDashboard.summary.points.points -= form.points
-    memberDashboard.summary.pointsEarned.points -= form.points
+    const newPoints =  memberDashboard.summary.points.points - form.points
+    memberDashboard.summary.points.points = newPoints
+    memberDashboard.summary.pointsEarned.points = newPoints
+
     setMemberDashboard(memberDashboard)
   }
   
@@ -490,7 +492,7 @@ function ErrorToast(){
   const [show, setShow] = useState(true)
   return(
     <div className="d-flex justify-content-center px-2" >
-      <Toast className="status-toast bg-danger col-md-8" onClose={() => setShow(false)} show={show} delay={8000} autohide>
+      <Toast className="status-toast bg-danger col-md-8" onClose={() => setShow(false)} show={show} delay={3000} autohide>
         <Toast.Body>Failed to share points</Toast.Body>
       </Toast>
     </div>
@@ -502,7 +504,7 @@ function SuccessToast(){
   const [show, setShow] = useState(true)
   return(
     <div className="d-flex justify-content-center px-2" >
-      <Toast className="status-toast bg-success col-md-8" onClose={() => setShow(false)} show={show} delay={8000} autohide>
+      <Toast className="status-toast bg-success col-md-8" onClose={() => setShow(false)} show={show} delay={3000} autohide>
         <Toast.Body>Points shared successfully</Toast.Body>
       </Toast>
     </div>
