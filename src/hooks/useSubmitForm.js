@@ -10,6 +10,7 @@ export function useSubmitForm({url, method = "POST", beforeSubmit, onSuccess = (
       beforeSubmit()
       setIsLoading(true)
       setError(null)
+      setData(null)
       const form = e.target
       let formData = new FormData(form)
       formData = Object.fromEntries(formData.entries()) 
