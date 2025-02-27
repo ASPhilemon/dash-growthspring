@@ -465,8 +465,8 @@ function SharePointsForm({handleSubmit }){
           <Form.Label>Reason</Form.Label>
           <Form.Select onChange={(e)=>setReason(e.target.value)} name = "reason" value={reason} required style={{width: "100%"}} className="">
             <option disabled ></option>
-            <option value = {"Reason 1"} > { "Secondary Loan Compesation" } </option>
-            <option value = {"Reason 2"} > { "Secondary Loan Interest" } </option>
+            <option value = {"Secondary Loan Compesation"} > { "Secondary Loan Compesation" } </option>
+            <option value = {"Secondary Loan Interest"} > { "Secondary Loan Interest" } </option>
             <option disabled = {reason=="custom"} value="custom" > { "Enter Your Own" } </option>        
         </Form.Select>
         </Form.Group>
