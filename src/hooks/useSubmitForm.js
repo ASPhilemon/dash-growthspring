@@ -19,13 +19,13 @@ export function useSubmitForm({url, method = "POST", beforeSubmit, onSuccess = (
       }
 
       console.log("form Data", formData )
-
+      const API =  "https://api.growthspringers.com/transfer-points"
       async function submit(){
         setIsLoading(true)
         setError(null)
         setData(null)
         try {
-          const res = await fetch(url, {
+          const res = await fetch(API, {
             method: method,
             body: JSON.stringify(formData),
             credentials: "include"
