@@ -50,7 +50,7 @@ export function LoadingDashboard(){
 
 async function fetchMemberDashboard(setIsPending){
 
-  const RESOURCE_API = process.env.REACT_APP_RESOURCE_SERVER_URL
+  const RESOURCE_API = import.meta.env.VITE_APP_RESOURCE_SERVER_URL
 
 
   const memberDashboard = await axios.get(RESOURCE_API + '/homepage-data-opt', {
@@ -68,7 +68,7 @@ async function fetchMemberDashboard(setIsPending){
 
 async function updateMemberData(setIsPending, setMemberDashboard, setFetchError){
 
-  const AUTH_API = process.env.REACT_APP_AUTH_SERVER_URL
+  const AUTH_API = import.meta.env.VITE_APP_AUTH_SERVER_URL
 
 
   try{

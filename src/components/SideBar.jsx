@@ -7,7 +7,7 @@ export function SideBar({showSideBar, handleClose}) {
  
   const { memberDashboard } = useMemberDashboard()
   const isAdmin = memberDashboard.user.isAdmin
-  const AUTH_SERVER_URL = process.env.REACT_APP_AUTH_SERVER_URL
+  const AUTH_SERVER_URL = import.meta.env.VITE_APP_AUTH_SERVER_URL
 
   return (
     <Offcanvas 
@@ -51,7 +51,7 @@ function Profile({handleClose}){
   const names = user.fullName.split(' ')
   const displayName = user.displayName? user.displayName.split(" ")[0]: names[names.length - 1]
 
-  const API = process.env.REACT_APP_RESOURCE_SERVER_URL
+  const API = import.meta.env.VITE_APP_RESOURCE_SERVER_URL
   let imgSrc = user.defaultPhoto
   if (user.photoURL){
     imgSrc = user.photoURL.startsWith("data")? user.photoURL: API + '/' + user.photoURL
