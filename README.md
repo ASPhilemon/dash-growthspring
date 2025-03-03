@@ -1,3 +1,3 @@
 # GROWTHSPRING CLUB
 
-Webapp for growthspring club.
+Webapp for growthspringers.
