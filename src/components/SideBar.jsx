@@ -73,6 +73,7 @@ function Profile({handleClose}){
       <Link onClick={handleClose} className='display-6 px-1 text-gold overflow-x-hidden d-inline-block text-truncate' to={"/account"} >
         <p className='d-inline-block' >{displayName}</p>
       </Link>
+      5
       </div>
     </section>
   )
