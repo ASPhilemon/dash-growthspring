@@ -17,7 +17,7 @@ export function Account(){
   const { memberDashboard, setMemberDashboard } = useMemberDashboard()
   const user = memberDashboard.user
 
-  const API = process.env.REACT_APP_RESOURCE_SERVER_URL
+  const API = import.meta.env.VITE_APP_RESOURCE_SERVER_URL
 
   function handleChangeActiveUI(UI){
     console.log("active ui", UI)
@@ -62,7 +62,7 @@ export function Account(){
 }
 
 function Header({user, activeUI, handleChangeActiveUI}){
-  const API = process.env.REACT_APP_RESOURCE_SERVER_URL
+  const API = import.meta.env.VITE_APP_RESOURCE_SERVER_URL
   let imgSrc = user.defaultPhoto
   if (user.photoURL){
     imgSrc = user.photoURL.startsWith("data")? user.photoURL: API + '/' + user.photoURL
@@ -104,7 +104,7 @@ function ImageSourcePicker({activeUI, setAccountUpdateFeedback, handleChangeActi
   async function handleDeletePhoto(){
     handleChangeActiveUI(["loading"])
     try {
-      const API = process.env.REACT_APP_RESOURCE_SERVER_URL
+      const API = import.meta.env.VITE_APP_RESOURCE_SERVER_URL
       const response = await fetch(API + "/delete-photo", {
         method: "DELETE",
         credentials: "include",
@@ -202,7 +202,7 @@ function ImageSourcePicker({activeUI, setAccountUpdateFeedback, handleChangeActi
     const formData = new FormData();
     formData.append('image', blobImage, 'profile-image.jpg');
     try {
-      const API = process.env.REACT_APP_RESOURCE_SERVER_URL
+      const API = import.meta.env.VITE_APP_RESOURCE_SERVER_URL
       const response = await fetch(API + "/upload-photo", {
         method: "POST",
         credentials: "include",
@@ -277,7 +277,7 @@ function AccountUpdateFeedback({feedback, setAccountUpdateFeedback}){
 }
 
 function ProfilePhotoFull({imgSrc, handleChangeActiveUI, activeUI, show}){
-  const API = process.env.REACT_APP_RESOURCE_SERVER_URL
+  const API = import.meta.env.VITE_APP_RESOURCE_SERVER_URL
   
   return (
 
@@ -321,7 +321,7 @@ function AccountInfo({user, handleChangeUser, setAccountUpdateFeedback}){
     }
 
     try {
-      const API = process.env.REACT_APP_RESOURCE_SERVER_URL
+      const API = import.meta.env.VITE_APP_RESOURCE_SERVER_URL
       const response = await fetch( API + "/update-user", {
         headers : {
           "Content-Type": "application/json"

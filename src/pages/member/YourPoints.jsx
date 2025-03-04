@@ -16,7 +16,7 @@ export default function Points(){
   let [sharePointsDialog, setSharePointsDialog] = useState(null)
   const {setMemberDashboard, memberDashboard} = useMemberDashboard()
 
-  const RESOURCE_SERVER =  process.env.REACT_APP_RESOURCE_SERVER_URL
+  const RESOURCE_SERVER =  import.meta.env.VITE_APP_RESOURCE_SERVER_URL
 
   const url = RESOURCE_SERVER + "/transfer-points"
 
