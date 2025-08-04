@@ -48,23 +48,34 @@ export function LoadingDashboard(){
 }
 
 
-async function fetchMemberDashboard(setIsPending){
+async function fetchMemberDashboard(setIsPending) {
+  const RESOURCE_API = import.meta.env.VITE_APP_RESOURCE_SERVER_URL;
 
-  const RESOURCE_API = import.meta.env.VITE_APP_RESOURCE_SERVER_URL
-
-
-  const memberDashboard = await axios.get(RESOURCE_API + '/homepage-data-opt', {
-    responseType: 'json',
-    withCredentials: true,
-    timeout: 30000,
-    headers: {
+  try {
+    const response = await fetch(`${RESOURCE_API}/homepage-data-opt`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
         'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  })
-  setIsPending(false)
-  await new Promise(resolve => setTimeout(resolve, 800));
-  return memberDashboard.data
+
+    const data = await response.json();
+
+    setIsPending(false);
+    await new Promise(resolve => setTimeout(resolve, 800));
+    return data;
+  } catch (error) {
+    setIsPending(false);
+    console.error('Fetch error:', error);
+    throw error;
+  }
 }
+
 
 async function updateMemberData(setIsPending, setMemberDashboard, setFetchError){
 
