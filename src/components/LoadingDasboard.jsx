@@ -22,7 +22,7 @@ export function LoadingDashboard(){
         <div className="loading-container">
           <div className="logo-loading mb-5 text-center w-100">GrowthSpring</div>
           <div className ="loading-bar-container rounded-pill">
-            <div className = {`loading-bar rounded-pill " + ${!isPending && " loading-animation"}`}></div>
+            <div className = {`loading-bar rounded-pill " + ${!fetchError && " loading-animation"}`}></div>
           </div>
         </div>
         }
