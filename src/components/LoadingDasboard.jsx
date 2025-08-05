@@ -67,7 +67,7 @@ async function fetchMemberDashboard(setIsPending) {
     const data = await response.json();
 
     setIsPending(false);
-    await new Promise(resolve => setTimeout(resolve, 800));
+    //await new Promise(resolve => setTimeout(resolve, 800));
     return data;
   } catch (error) {
     setIsPending(false);
