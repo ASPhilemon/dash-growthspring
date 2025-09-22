@@ -15,8 +15,7 @@ async function api(path, { token, ...options } = {}) {
     },
   });
   if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`API ${res.status}: ${text || res.statusText}`);
+    window.location.href = "https://auth.growthspringers.com"
   }
   const json = await res.json();
   if (json?.error) throw new Error(json.error);
