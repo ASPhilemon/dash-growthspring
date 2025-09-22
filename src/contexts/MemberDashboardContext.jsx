@@ -14,9 +14,9 @@ async function api(path, { token, ...options } = {}) {
       ...(options.headers || {}),
     },
   });
-  //if (!res.ok) {
-   // window.location.href = "https://auth.growthspringers.com"
-  //}
+  if (res.status == 401 or res.status == 403) {
+    window.location.href = "https://auth.growthspringers.com"
+  }
   const json = await res.json();
   if (json?.error) throw new Error(json.error);
   return json?.data;
