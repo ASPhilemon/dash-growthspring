@@ -1,89 +1,87 @@
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
-import { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { useMemberDashboard } from './contexts/MemberDashboardContext';
+// src/App.js
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import { QueryClient, QueryClientProvider, useIsFetching } from "@tanstack/react-query";
+import AdminLayout from "./components/layout/AdminLayout";
+import MemberLayout from "./components/layout/MemberLayout";
 
-//Components
-import { ScrollToTop } from './components/ScrollToTop';
-import { NavBar } from './components/NavBar';
-import { SideBar } from './components/SideBar';
-import { LoadingDashboard } from './components/LoadingDasboard';
+import PageFade from "./components/animations/PageFade";
+import { DashboardSwitchProvider } from "./contexts/DashboardSwitchContext";
+
+import { AuthProvider } from "./contexts/auth-context";
+import { MemberDashboardProvider } from "./contexts/MemberDashboardContext";
+import { AdminDashboardProvider } from "./contexts/AdminDashboardContext";
+import GlobalLoadingOverlayController from "./components/GlobalLoadingOverlayController";
 
 
-//Pages
-import Home from './pages/member/Home';
-import DepositsPayments from './pages/member/DepositsPayments';
-import YourPoints from './pages/member/YourPoints';
-import YourLoans from './pages/member/YourLoans';
-import YourCredits from './pages/member/YourCredits';
-import Club from './pages/member/Club';
-import { Account } from './pages/member/Account';
+import MemberDashboard from "./pages/MemberDashboard";
+import SavingsDashboard from "./pages/TemporarySavingsDashboard";
+import LoansDetailsPage from "./pages/LoansDetailsPage";
+import DepositsDetailsPage from "./pages/DepositsDetailsPage";
+import TemporaryDepositsDetailsPage from "./pages/TemporaryDepositsDetailsPage";
+import TemporaryLoansDetailsPage from "./pages/TemporaryLoansDetailsPage";
+import TemporaryClubDetailsPage from "./pages/TemporaryClubDetailsPage";
+import EarningsDetailsPage from "./pages/EarningsDetailsPage";
+import PointsDetailsPage from "./pages/PointsDetailsPage";
+import DiscountsDetailsPage from "./pages/DiscountsDetailsPage";
+import ClubDepositsDetailsPage from "./pages/ClubDepositsDetailsPage";
+import ClubEarningsDetailsPage from "./pages/ClubEarningsDetailsPage";
+import AdminHomePage from "./pages/Admin pages/AdminHomePage";
+import AdminDepositsPage from "./pages/Admin pages/AdminDepositsPage";
+import AdminLoansPage from "./pages/Admin pages/AdminLoansPage";
 
-function App() {
-  const { memberDashboard } = useMemberDashboard()
-  console.log(memberDashboard)
+const queryClient = new QueryClient();
 
-  const [showSideBar, setShowSideBar] = useState(false);
-  const handleClose = () => setShowSideBar(false);
-  const handleShow = () => setShowSideBar(true);
-
+function AnimatedRoutes() {
+  const location = useLocation();
   return (
-    memberDashboard ?
-    <BrowserRouter>
-      <ScrollToTop/>
-      <Container fluid className = 'px-0'>
-        <Row className = "gx-0">
-          { <SideBar
-            showSideBar = {showSideBar}
-            handleClose = {handleClose}
-          /> }
-          <Col className='d-flex whole-page flex-column' md = {{offset:4}} lg = { {offset:3}} >
-            { <NavBar handleShow = {handleShow}/>}
-            <div className = 'page-container  flex-grow-1 d-flex flex-column'>
-              <Routes >
-                <Route
-                  path = "/"
-                  element = { <Home />  } 
-                />
-                <Route
-                  path="/deposits-payments"
-                  element = { <DepositsPayments /> }  
-                />
-                <Route
-                  path = "/your-points"
-                  element = { <YourPoints /> }  
-                />
-                <Route
-                  path = "/your-loans"
-                  element =  {<YourLoans /> }  
-                />
-                <Route
-                  path = "/your-credits"
-                  element =  { <YourCredits /> }  
-                />
-                <Route
-                  path = "/account"
-                  // element = { <Navigate to = '/' /> } 
-                  element = {<Account/>}
-                />
-                <Route
-                  path = "/club"
-                  element = { <Club /> } 
-                />
-                
-                {/*Not Found*/}
-                <Route
-                  path = "*"
-                  element = { <Navigate to = '/' /> } 
-                />
-              </Routes>
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    </BrowserRouter> :
-    <LoadingDashboard/>
+    <AnimatePresence mode="wait" initial={false}>
+      <Routes location={location} key={location.pathname}>
+        {/* Admin routes (now covered by AdminDashboardProvider above) */}
+        <Route element={<AdminLayout />}>
+          <Route path="/admin" element={<PageFade><AdminHomePage /></PageFade>} />
+          <Route path="/admin/deposits" element={<PageFade><AdminDepositsPage /></PageFade>} />
+          <Route path="/admin/loans" element={<PageFade><AdminLoansPage /></PageFade>} />
+        </Route>
+
+        {/* Member routes */}
+        <Route element={<MemberLayout />}>
+          <Route path="/home" element={<PageFade><MemberDashboard /></PageFade>} />
+          <Route path="/temporary-savings" element={<PageFade><SavingsDashboard /></PageFade>} />
+          <Route path="/loans" element={<PageFade><LoansDetailsPage /></PageFade>} />
+          <Route path="/temporary-savings/loans" element={<PageFade><TemporaryLoansDetailsPage /></PageFade>} />
+          <Route path="/deposits" element={<PageFade><DepositsDetailsPage /></PageFade>} />
+          <Route path="/temporary-savings/transactions" element={<PageFade><TemporaryDepositsDetailsPage /></PageFade>} />
+          <Route path="/earnings" element={<PageFade><EarningsDetailsPage /></PageFade>} />
+          <Route path="/points" element={<PageFade><PointsDetailsPage /></PageFade>} />
+          <Route path="/discounts" element={<PageFade><DiscountsDetailsPage /></PageFade>} />
+          <Route path="/club-deposits" element={<PageFade><ClubDepositsDetailsPage /></PageFade>} />
+          <Route path="/club-earnings" element={<PageFade><ClubEarningsDetailsPage /></PageFade>} />
+          <Route path="/temporary-savings/club" element={<PageFade><TemporaryClubDetailsPage /></PageFade>} />
+        </Route>
+      </Routes>
+    </AnimatePresence>
   );
 }
 
-export default App;
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <MemberDashboardProvider>
+          <AdminDashboardProvider>
+          <Router>
+          <DashboardSwitchProvider>
+            {/* Shows overlay on refresh, route change, and while queries fetch */}
+            <GlobalLoadingOverlayController minShowMs={2000}/>
+            <AnimatedRoutes />
+          </DashboardSwitchProvider>
+        </Router>
+          </AdminDashboardProvider>
+        </MemberDashboardProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+}
