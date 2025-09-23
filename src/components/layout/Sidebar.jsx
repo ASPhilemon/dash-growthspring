@@ -323,7 +323,10 @@ const actionsToRender = DASHBOARDS
 }
 
 async function handleLogout(){
-  await fetch("https://api.growthspringers.com/auth/signout", {method:"POST"})
+  await fetch("https://api.growthspringers.com/auth/signout", {
+    method:"POST",
+    credentials:"include"
+  })
   window.location.href = "https://growthspringers.com"
 }
 
