@@ -7,13 +7,12 @@ import { API_BASE } from "../../config";
 async function api(path, { token, ...options } = {}) {
   const url = `${API_BASE}${path}`;
   const res = await fetch(url, {
-    ...options,
+    "credentials": "include",
     headers: {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {}),
     },
-    "credentials": "include"
   });
   if (res.status == 401 || res.status == 403) {
     window.location.href = "https://auth.growthspringers.com"

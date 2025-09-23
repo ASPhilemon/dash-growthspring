@@ -9,7 +9,7 @@ import { API_BASE } from "../../config";
 async function api(path, { token, ...options } = {}) {
   const url = `${API_BASE}${path}`;
   const res = await fetch(url, {
-    ...options,
+    "credentials": "include",
     headers: {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
