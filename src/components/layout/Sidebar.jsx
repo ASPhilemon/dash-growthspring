@@ -140,7 +140,7 @@ function SidebarAction({ text, to, onClose }) {
 /* ProfileHeader clickable - placed at very top with small padding and closer to left */
 function ProfileHeader({ profile, onOpenProfile }) {
   const name = profile?.user?.displayName || profile?.user?.fullName || "Mwebe";
-  const avatar = profile?.user?.photoURL || "https://via.placeholder.com/80";
+  const avatar = profile?.user?.photoURL || "https://api.growthspringers.com/img/default.jpg";
 
   return (
     <div
