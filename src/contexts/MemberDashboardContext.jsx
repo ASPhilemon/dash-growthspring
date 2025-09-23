@@ -15,7 +15,7 @@ async function api(path, { token, ...options } = {}) {
     },
     "credentials": "include"
   });
-  if (!res.ok) {
+  if (res.status == 401 || res.status == 403) {
     window.location.href = "https://auth.growthspringers.com"
   }
   const json = await res.json();
