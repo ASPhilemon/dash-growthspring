@@ -12,6 +12,7 @@ async function api(path, { token, ...options } = {}) {
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
   if (res.status == 401 || res.status == 403) {
