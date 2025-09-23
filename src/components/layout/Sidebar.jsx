@@ -227,15 +227,6 @@ const actionsToRender = DASHBOARDS
     if (typeof setMemberDashboard === "function") setMemberDashboard(updated);
   };
 
-  const handleLogout = () => {
-    if (typeof onLogout === "function") {
-      onLogout();
-      return;
-    }
-    try { localStorage.removeItem("authToken"); } catch (e) {}
-    console.log("Logged out (no handler provided).");
-  };
-
   const sidebarStyleBase = {
     width: sizes.sidebarWidth,
     backgroundColor: THEME_COLORS.navy,
@@ -329,6 +320,11 @@ const actionsToRender = DASHBOARDS
       />
     </>
   );
+}
+
+async function handleLogout(){
+  await fetch("https://api.growthspringers.com/auth/signout", {method:"POST"})
+  window.location.href = "https://growthspringers.com"
 }
 
 export default Sidebar;
