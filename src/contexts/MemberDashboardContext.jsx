@@ -5,6 +5,7 @@ import { API_BASE } from "../../config";
 
 // Fetch helper: unwraps { error, data }
 async function api(path, { token, ...options } = {}) {
+  console.log("token = ", token)
   const url = `${API_BASE}${path}`;
   const res = await fetch(url, {
     credentials: "include",
