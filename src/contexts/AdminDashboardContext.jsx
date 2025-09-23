@@ -12,12 +12,11 @@ async function api(path, { token, ...options } = {}) {
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
   });
   console.log("res.status = ", res.status)
   if (res.status == 401 || res.status == 403) {
-    //window.location.href = "https://auth.growthspringers.com"
+    window.location.href = "https://auth.growthspringers.com"
   }
   const json = await res.json();
   console.log("json = ", json)
