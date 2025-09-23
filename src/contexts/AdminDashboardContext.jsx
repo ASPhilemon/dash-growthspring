@@ -15,6 +15,7 @@ async function api(path, { token, ...options } = {}) {
       Authorization: `Bearer ${token}`,
     },
   });
+  console.log("res.status = ", res.status)
   if (res.status == 401 || res.status == 403) {
     //window.location.href = "https://auth.growthspringers.com"
   }
