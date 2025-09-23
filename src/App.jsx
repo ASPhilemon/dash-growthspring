@@ -1,6 +1,6 @@
 // src/App.js
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider, useIsFetching } from "@tanstack/react-query";
 import AdminLayout from "./components/layout/AdminLayout";
@@ -47,6 +47,7 @@ function AnimatedRoutes() {
 
         {/* Member routes */}
         <Route element={<MemberLayout />}>
+          <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<PageFade><MemberDashboard /></PageFade>} />
           <Route path="/temporary-savings" element={<PageFade><SavingsDashboard /></PageFade>} />
           <Route path="/loans" element={<PageFade><LoansDetailsPage /></PageFade>} />
