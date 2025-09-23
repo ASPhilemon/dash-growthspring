@@ -13,6 +13,7 @@ async function api(path, { token, ...options } = {}) {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {}),
     },
+    "credentials": "include"
   });
   if (!res.ok) {
     window.location.href = "https://auth.growthspringers.com"
