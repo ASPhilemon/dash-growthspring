@@ -1062,11 +1062,15 @@ function ApproveLoanModal({
     }
   }, [isOpen]);
 
-  const total = rows.reduce((s, r) => s + toNumberStrict(r.amount), 0);
+  const filled = rows.filter(r => toNumberStrict(r.amount) > 0);
+
+  const total = filled.reduce((s, r) => s + toNumberStrict(r.amount), 0);
   const matches = total === toNumberStrict(requestedAmount);
-  const hasIds = rows.every((r) => r.id);
-  const positive = rows.every((r) => toNumberStrict(r.amount) > 0);
-  const canSubmit = matches && hasIds && positive && !submitting && !!loanId;
+  const hasIds = filled.every(r => !!r.id);
+  const positive = filled.every(r => toNumberStrict(r.amount) > 0);
+  const atLeastOne = filled.length > 0;
+  
+  const canSubmit = atLeastOne && matches && hasIds && positive && !submitting && !!loanId;
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -1076,9 +1080,9 @@ function ApproveLoanModal({
     try {
       // Build the Postman-equivalent payload
       const payload = {
-        sources: rows.map((r) => ({
-          id: r.id,                          // cash location id
-          amount: toNumberStrict(r.amount),  // number
+        sources: filled.map(r => ({
+          id: r.id,
+          amount: toNumberStrict(r.amount),
         })),
       };
 
