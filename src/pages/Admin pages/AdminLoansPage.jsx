@@ -1217,8 +1217,8 @@ function ApproveLoanModal({
                 style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #cbd5e1" }}
               />
             <div style={{margin: 6 , fontSize:13, color:"blue"}}>
-              {form.amount
-                ? Number(form.amount).toLocaleString('en-US')
+              {row.amount
+                ? Number(row.amount).toLocaleString('en-US')
                 : '—'}
             </div>               
             </div>
