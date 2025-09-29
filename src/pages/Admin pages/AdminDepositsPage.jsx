@@ -694,6 +694,11 @@ const res = await fetch(url, {
               required
               style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid rgb(128,128,128, 0.5)", outline: "none" }}
             />
+            <div style={{margin: 6 , fontSize:13, color:"blue"}}>
+              {form.amount
+                ? Number(form.amount).toLocaleString('en-US')
+                : '—'}
+            </div>            
           </div>
 
           {/* Date */}

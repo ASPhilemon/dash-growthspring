@@ -941,6 +941,11 @@ function AddLoanModal({
               onChange={(e) => setForm((s) => ({ ...s, amount: e.target.value }))}
               style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #cbd5e1" }}
             />
+            <div style={{margin: 6 , fontSize:13, color:"blue"}}>
+              {form.amount
+                ? Number(form.amount).toLocaleString('en-US')
+                : '—'}
+            </div>            
           </div>
 
           <div>
@@ -1211,6 +1216,11 @@ function ApproveLoanModal({
                 }
                 style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #cbd5e1" }}
               />
+            <div style={{margin: 6 , fontSize:13, color:"blue"}}>
+              {form.amount
+                ? Number(form.amount).toLocaleString('en-US')
+                : '—'}
+            </div>               
             </div>
           </div>
         ))}
@@ -1344,6 +1354,11 @@ function PayLoanModal({
             onChange={(e) => setForm((s) => ({ ...s, amount: e.target.value }))}
             style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #cbd5e1" }}
           />
+            <div style={{margin: 6 , fontSize:13, color:"blue"}}>
+              {form.amount
+                ? Number(form.amount).toLocaleString('en-US')
+                : '—'}
+            </div>          
         </div>
 
         {/* Date */}
