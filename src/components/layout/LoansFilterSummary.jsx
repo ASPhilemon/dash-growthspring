@@ -79,7 +79,7 @@ export default function LoansFilterSummary({ loans_summary = {} }) {
           }}
         >
         {lines.map((ln, i) => (
-          <div key={i} style={{ marginTop: i ? 4 : 0 }}>{ln}</div>
+          <div key={i} style={{ color: "white", marginTop: i ? 4 : 0 }}>{ln}</div>
         ))}
         </span>
       </span>

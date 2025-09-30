@@ -167,39 +167,62 @@ useEffect(() => {
   setLoading(false);
 }, [loansFromCtx]);
 
-// derive filtered+sorted+paginated list
-const filteredRecords = React.useMemo(() => {
+// helper: safe numeric conversion
+const toNum = (v) => {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
+};
+
+// 1) filter + sort (NO pagination here)
+const baseFiltered = React.useMemo(() => {
   const base = Array.isArray(records) ? records : [];
   const passed = base.filter((ln) => matchesFilters(ln, filters));
-  const sorted = sortLoans(passed, filters);
-  return paginate(sorted, filters);
+  return sortLoans(passed, filters);
 }, [records, filters]);
 
-// OPTIONAL: compute summary from filtered set
-const loansSummary = React.useMemo(() => {
-  const ongoing = filteredRecords.filter(l => (l.loan_status || l.status) === "Ongoing");
-  const ended   = filteredRecords.filter(l => (l.loan_status || l.status) === "Ended");
+// 2) paginate ONLY for the table/list UI
+const paginatedRecords = React.useMemo(() => {
+  return paginate(baseFiltered, filters);
+}, [baseFiltered, filters]);
 
-  const totalPrincipal = filteredRecords.reduce((s, l) => s + toNumber(l.loanAmount ?? l.amount), 0);
-  const principalLeft  = filteredRecords.reduce((s, l) => s + toNumber(l.amountLeft ?? l.principalLeft), 0);
-  const expectedInterest = filteredRecords.reduce((s, l) => s + toNumber(l.unclearedInterest), 0);
-  const interestPaid   = filteredRecords.reduce((s, l) => s + toNumber(l.paid_interest ?? l.interestPaid), 0);
-  const members = new Set(filteredRecords.map(l => String(l.borrower))).size;
-  const membersOngoing = new Set(ongoing.map(l => String(l.borrower))).size;
-  const membersEnded   = new Set(ended.map(l => String(l.borrower))).size;
+// 3) compute summaries from the FULL (unpaginated) filtered set
+const loansSummary = React.useMemo(() => {
+  // normalize status to avoid case/field drift
+  const statusOf = (l) => String(l.loan_status ?? l.status ?? "").trim().toLowerCase();
+  const ongoing = baseFiltered.filter((l) => statusOf(l) === "ongoing");
+  const ended   = baseFiltered.filter((l) => statusOf(l) === "ended");
+
+  const sum = (arr, pick) => arr.reduce((s, l) => s + toNum(pick(l)), 0);
+
+  const totalPrincipal   = sum(baseFiltered, (l) => l.loanAmount ?? l.amount);
+  const principalLeft    = sum(baseFiltered, (l) => l.amountLeft ?? l.principalLeft);
+  const expectedInterest = sum(baseFiltered, (l) => l.unclearedInterest);
+  const interestPaid     = sum(baseFiltered, (l) => l.paid_interest ?? l.interestPaid);
+
+  const members          = new Set(baseFiltered.map((l) => String(l.borrower))).size;
+  const membersOngoing   = new Set(ongoing.map((l) => String(l.borrower))).size;
+  const membersEnded     = new Set(ended.map((l) => String(l.borrower))).size;
+
+  // If you also need per-status principals, compute from ongoing/ended here
+  const ongoingPrincipalLeft = sum(ongoing, (l) => l.amountLeft ?? l.principalLeft);
+  const endedPrincipalLeft   = sum(ended,   (l) => l.amountLeft ?? l.principalLeft);
 
   return {
     ongoingLoansCount: ongoing.length,
     endedLoansCount: ended.length,
     totalPrincipal,
     principalLeft,
-    expectedInterest: expectedInterest, // set if you can compute it
+    expectedInterest,
     interestPaid,
     members,
     membersOngoingLoans: { size: membersOngoing },
     membersEndedLoans:   { size: membersEnded },
+    // optional detail:
+    ongoingPrincipalLeft,
+    endedPrincipalLeft,
   };
-}, [filteredRecords]);
+}, [baseFiltered]);
+
 
   // ---------- helpers ----------
   function fmtCurrency(n) {
@@ -1505,7 +1528,7 @@ function PayLoanModal({
   <div style={{ padding: 12 }}>Loading…</div>
 ) : (
   <LoanList
-  items={filteredRecords}
+  items={baseFiltered}
   isMobile={isMobile}
   onApprove={(loan) => setShowApprove({ open: true, loan })}
   onPay={(loan) => setShowPay({ open: true, loan })}
