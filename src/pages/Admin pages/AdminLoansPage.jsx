@@ -406,7 +406,7 @@ const loansSummary = React.useMemo(() => {
   
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ fontWeight: 900, fontSize: 18, color: colors.navy }}>{fmtCurrency(loanAmount)}
-            <div style={{ fontSize: 12, fontWeight: "bold", opacity: 0.9 }}>{ loan.issueDate}</div>
+            {isMobile ? (<div style={{ fontSize: 12, fontWeight: "bold", opacity: 0.9 }}>{ loan.issueDate}</div>) : null }
             </div>
             {/* Chevron ONLY on mobile */}
             {isMobile ? (
