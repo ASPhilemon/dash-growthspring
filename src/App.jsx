@@ -1,6 +1,6 @@
 // src/App.js
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider, useIsFetching } from "@tanstack/react-query";
 import AdminLayout from "./components/layout/AdminLayout";
@@ -30,6 +30,7 @@ import ClubEarningsDetailsPage from "./pages/ClubEarningsDetailsPage";
 import AdminHomePage from "./pages/Admin pages/AdminHomePage";
 import AdminDepositsPage from "./pages/Admin pages/AdminDepositsPage";
 import AdminLoansPage from "./pages/Admin pages/AdminLoansPage";
+import AdminFundTransactionsPage from "./pages/Admin pages/ClubFundTransactions";
 
 const queryClient = new QueryClient();
 
@@ -43,11 +44,11 @@ function AnimatedRoutes() {
           <Route path="/admin" element={<PageFade><AdminHomePage /></PageFade>} />
           <Route path="/admin/deposits" element={<PageFade><AdminDepositsPage /></PageFade>} />
           <Route path="/admin/loans" element={<PageFade><AdminLoansPage /></PageFade>} />
+          <Route path="/admin/fundTransactions" element={<PageFade><AdminFundTransactionsPage /></PageFade>} />
         </Route>
 
         {/* Member routes */}
         <Route element={<MemberLayout />}>
-          <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<PageFade><MemberDashboard /></PageFade>} />
           <Route path="/temporary-savings" element={<PageFade><SavingsDashboard /></PageFade>} />
           <Route path="/loans" element={<PageFade><LoansDetailsPage /></PageFade>} />

@@ -834,6 +834,7 @@ const res = await fetch(url, {
     { text: "Home", to: "/admin" },
     { text: "Deposits", to: "/admin/deposits" },
     { text: "Loans", to: "/admin/loans" },
+    { text: "Club Fund", to: "/admin/fundTransactions" },
   ];
 
   return (

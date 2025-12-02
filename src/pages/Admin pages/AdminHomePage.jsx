@@ -23,6 +23,7 @@ export default function AdminHomePage({dashboard = "admin" }) {
     { text: "Home", to: "/admin" },
     { text: "Deposits", to: "/admin/deposits" },
     { text: "Loans", to: "/admin/loans" },
+    { text: "Club Fund", to: "/admin/fundTransactions" },
   ];
   
   const { adminDashboard, isLoading, error } = useAdminDashboard();
@@ -269,16 +270,223 @@ async function handleDownload(format) {
     XLSX.writeFile(wb, "financial_records.xlsx");
   }
 
+  function hexToRgbArray(hex) {
+    const h = (hex || "").replace("#", "").trim();
+    const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+    const n = parseInt(full, 16);
+    if (Number.isNaN(n)) return [0, 0, 0];
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+  
+  function formatDateTimeForPdf(d = new Date()) {
+    // e.g. "29 Nov 2025, 14:07"
+    return d.toLocaleString(undefined, {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+  
+  function safeMoney(v) {
+    const num = typeof v === "number" ? v : Number(String(v).replace(/,/g, ""));
+    return Number.isFinite(num) ? num.toLocaleString() : String(v ?? "");
+  }
+  
+  function normalizeDateCell(v) {
+    // tries to make date look consistent; falls back to original
+    if (!v) return "";
+    const d = new Date(v);
+    if (!Number.isNaN(d.getTime())) return d.toLocaleDateString();
+    return String(v);
+  }
+  
+  // A clean “sample logo” drawn as vector (no asset needed).
+  // If you later want a real image logo, see note inside exportToPDF.
+  function drawSampleLogo(doc, x, y, size, navyRgb, goldRgb) {
+    // gold circle
+    doc.setFillColor(...goldRgb);
+    doc.circle(x + size / 2, y + size / 2, size / 2, "F");
+    // "GS" in navy
+    doc.setTextColor(...navyRgb);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(Math.max(10, Math.floor(size * 0.45)));
+    doc.text("GS", x + size * 0.22, y + size * 0.68);
+  }
+  
   async function exportToPDF(filtered) {
     try {
-      // dynamic import of jspdf-autotable (ensures autoTable function is available)
       const { default: autoTable } = await import("jspdf-autotable");
+      const doc = new jsPDF({ unit: "pt", format: "a4" });
   
-      const doc = new jsPDF();
-      Object.entries(filtered).forEach(([month, data], i) => {
-        if (i > 0) doc.addPage();
+      // ---- local helpers (drop-in)
+      const hexToRgbArray = (hex) => {
+        const h = (hex || "").replace("#", "").trim();
+        const full = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+        const n = parseInt(full, 16);
+        if (Number.isNaN(n)) return [0, 0, 0];
+        return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+      };
   
-        // totals
+      const formatDateTimeForPdf = (d = new Date()) =>
+        d.toLocaleString(undefined, {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+  
+      const safeMoney = (v) => {
+        const num = typeof v === "number" ? v : Number(String(v).replace(/,/g, ""));
+        return Number.isFinite(num) ? num.toLocaleString() : String(v ?? "");
+      };
+  
+      const normalizeDateCell = (v) => {
+        if (!v) return "";
+        const d = new Date(v);
+        if (!Number.isNaN(d.getTime())) return d.toLocaleDateString();
+        return String(v);
+      };
+  
+      const svgToPngDataUrl = (svgString, sizePx = 64) =>
+        new Promise((resolve, reject) => {
+          try {
+            const svgDataUrl =
+              "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgString);
+  
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = () => {
+              const scale = 2;
+              const canvas = document.createElement("canvas");
+              canvas.width = sizePx * scale;
+              canvas.height = sizePx * scale;
+              const ctx = canvas.getContext("2d");
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              resolve(canvas.toDataURL("image/png"));
+            };
+            img.onerror = () => reject(new Error("Failed to load SVG image"));
+            img.src = svgDataUrl;
+          } catch (e) {
+            reject(e);
+          }
+        });
+  
+      // ---- Theme colors
+      const navyRgb = hexToRgbArray(colors.navy);
+      const goldRgb = hexToRgbArray(colors.gold);
+  
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+  
+      const marginX = 40;
+      const headerH = 72;
+      const footerH = 44;
+  
+      const totalPagesExp = "{total_pages_count_string}";
+      const generatedAt = formatDateTimeForPdf(new Date());
+  
+      const months = getSortedMonths(Object.keys(filtered || {}));
+      const rangeLabel =
+        months.length === 0
+          ? "No range selected"
+          : months.length === 1
+          ? months[0]
+          : `${months[0]}  –  ${months[months.length - 1]}`;
+  
+      // ---- SVG logo
+      const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2"><path d="M34.586 56V35.13c0-4.982 1.796-9.796 5.059-13.561l2.209-2.548M34.586 34.189l-.542-4.88a10.567 10.567 0 0 0-3.231-6.5l-7.855-7.446" style="fill:none;stroke:#222a33;stroke-width:1.5px"/><path d="M31.573 23.53s1.466-5.289-1.347-9.69c-2.106-3.294-10.288-5.185-14.271-5.928a2.017 2.017 0 0 0-2.381 1.953c-.041 3.013.538 8.394 4.539 12.696 5.897 6.34 11.144 3.876 11.144 3.876M37.526 24.015s-1.84-3.921-.233-7.717c1.14-2.691 6.685-5.123 9.818-6.311a2.016 2.016 0 0 1 2.706 1.573c.359 2.418.407 6.336-1.948 9.922-3.75 5.712-8.157 4.488-8.157 4.488M27.975 20.119h-5.549M34.586 40.574l-3.733 4.978A6.616 6.616 0 0 1 27.167 48l-4.206 1.051a6.61 6.61 0 0 0-4.067 3.013l-2.019 3.365M26.231 48.255 25.23 54.5M34.586 45.716l4.029 5.64a6.612 6.612 0 0 0 4.561 2.718l6.265.783" style="fill:none;stroke:#222a33;stroke-width:1.5px"/></svg>`;
+  
+      let logoPng = null;
+      try {
+        logoPng = await svgToPngDataUrl(logoSvg, 64);
+      } catch {
+        logoPng = null;
+      }
+  
+      function drawHeader({ monthLabel }) {
+        // Top accent
+        doc.setDrawColor(...goldRgb);
+        doc.setLineWidth(3);
+        doc.line(marginX, 20, pageWidth - marginX, 20);
+  
+        // Logo
+        const logoSize = 26;
+        const logoX = marginX;
+        const logoY = 28;
+        if (logoPng) doc.addImage(logoPng, "PNG", logoX, logoY, logoSize, logoSize);
+  
+        // Brand name
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+        doc.setTextColor(...goldRgb);
+        const brandX = logoX + logoSize + 10;
+        const brandY = 48;
+        doc.text("GrowthSpring", brandX, brandY);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(...navyRgb);
+        // Measure brand text and add a small gap
+        const brandW = doc.getTextWidth("GrowthSpring");
+        doc.text("Financial Records Report", brandX + brandW + 65, brandY);        
+  
+        // Right meta
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(110, 110, 110);
+        doc.text(`Generated: ${generatedAt}`, pageWidth - marginX, 40, { align: "right" });
+        doc.text(`Range: ${rangeLabel}`, pageWidth - marginX, 54, { align: "right" });
+  
+        if (monthLabel) {
+          doc.setTextColor(...navyRgb);
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(10);
+          doc.text(monthLabel, pageWidth - marginX, 68, { align: "right" });
+        }
+  
+        // Divider under header
+        doc.setDrawColor(230, 230, 230);
+        doc.setLineWidth(1);
+        doc.line(marginX, headerH, pageWidth - marginX, headerH);
+      }
+  
+      function drawFooter() {
+        const pageNumber = doc.internal.getNumberOfPages();
+  
+        doc.setDrawColor(230, 230, 230);
+        doc.setLineWidth(1);
+        doc.line(marginX, pageHeight - footerH, pageWidth - marginX, pageHeight - footerH);
+  
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(120, 120, 120);
+        doc.text("GrowthSpring • Internal Use", marginX, pageHeight - 20);
+  
+        const pageStr = `Page ${pageNumber} of ${totalPagesExp}`;
+        doc.text(pageStr, pageWidth - marginX, pageHeight - 20, { align: "right" });
+      }
+  
+      // Empty state
+      if (!months.length) {
+        drawHeader({ monthLabel: "" });
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(12);
+        doc.setTextColor(...navyRgb);
+        doc.text("No records found for the selected range.", marginX, headerH + 40);
+        drawFooter();
+        if (typeof doc.putTotalPages === "function") doc.putTotalPages(totalPagesExp);
+        doc.save("financial_records.pdf");
+        return;
+      }
+  
+      months.forEach((month, idx) => {
+        const data = filtered[month] || {};
+        if (idx > 0) doc.addPage();
+  
         const totalsProvided = {
           totalInflow: data.totalInflow ?? 0,
           totalOutflow: data.totalOutflow ?? 0,
@@ -295,43 +503,115 @@ async function handleDownload(format) {
           totalLoanPayments: totalsProvided.totalLoanPayments || computed.totalLoanPayments,
         };
   
-        doc.setFontSize(16);
-        doc.setFont("helvetica", "bold");
-        doc.text(`Month: ${month}`, 10, 14);
+        drawHeader({ monthLabel: `Month: ${month}` });
   
-        doc.setFontSize(11);
+        // ---- Summary card (reverted arrangement + fonts, keep vertical divider)
+        const boxY = headerH + 18;
+        const boxH = 86;
+        const boxW = pageWidth - marginX * 2;
+  
+        doc.setFillColor(248, 250, 252);
+        doc.roundedRect(marginX, boxY, boxW, boxH, 10, 10, "F");
+  
+        // left accent
+        doc.setFillColor(...goldRgb);
+        doc.roundedRect(marginX, boxY, 6, boxH, 10, 10, "F");
+  
+        // vertical separator line
+        const midX = marginX + boxW / 2;
+        doc.setDrawColor(228, 228, 228);
+        doc.setLineWidth(1);
+        doc.line(midX, boxY + 12, midX, boxY + boxH - 12);
+  
+        const col1X = marginX + 18;
+        const col2X = midX + 18;
+  
+        const row1Y = boxY + 26;
+        const row2Y = boxY + 52;
+        const row3Y = boxY + 78;
+  
         doc.setFont("helvetica", "normal");
-        doc.text(`Total Inflow: ${totals.totalInflow.toLocaleString()}`, 10, 26);
-        doc.text(`Total Outflow: ${totals.totalOutflow.toLocaleString()}`, 10, 34);
-        doc.text(`Total Deposits: ${totals.totalDeposits.toLocaleString()}`, 10, 42);
-        doc.text(`Total Loans: ${totals.totalLoans.toLocaleString()}`, 10, 50);
-        doc.text(`Total Loan Payments: ${totals.totalLoanPayments.toLocaleString()}`, 10, 58);
+        doc.setFontSize(10);
+        doc.setTextColor(90, 90, 90);
   
-        // table: ensure each cell is a string to avoid issues
+        // labels
+        doc.text("Total Inflow", col1X, row1Y);
+        doc.text("Total Outflow / Loans", col1X, row2Y);
+        doc.text("Total Deposits", col1X, row3Y);
+  
+        doc.text("Total Loan Payments", col2X, row1Y);
+        doc.text("Total Loans", col2X, row2Y);
+  
+        // values
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(...navyRgb);
+  
+        // left values align near mid divider (right-aligned)
+        doc.text(safeMoney(totals.totalInflow), midX - 14, row1Y, { align: "right" });
+        doc.text(safeMoney(totals.totalOutflow), midX - 14, row2Y, { align: "right" });
+        doc.text(safeMoney(totals.totalDeposits), midX - 14, row3Y, { align: "right" });
+  
+        // right values align to page right margin
+        doc.text(safeMoney(totals.totalLoanPayments), pageWidth - marginX, row1Y, { align: "right" });
+        doc.text(safeMoney(totals.totalLoans), pageWidth - marginX, row2Y, { align: "right" });
+  
+        // ---- Table (4 columns; no Name)
         const body = (Array.isArray(data.records) ? data.records : []).map((r) => [
-          String(r.date || ""),
+          normalizeDateCell(r.date),
           String(r.type || ""),
-          String(r.name || ""),
-          String(r.amount || ""),
+          safeMoney(r.amount),
           String(r.destination || r.source || ""),
         ]);
   
-        // call autoTable(doc, options) imported above
+        const startTableY = boxY + boxH + 18;
+  
         autoTable(doc, {
-          startY: 68,
-          head: [["Date", "Type", "Name", "Amount", "Source/Destination"]],
+          startY: startTableY,
+          margin: { left: marginX, right: marginX, top: headerH + 10, bottom: footerH + 10 },
+          head: [["Date", "Type", "Amount", "Source / Destination"]],
           body,
-          styles: { fontSize: 10 },
-          headStyles: { fillColor: [30, 60, 90] },
+          theme: "grid",
+          styles: {
+            font: "helvetica",
+            fontSize: 9.5,
+            cellPadding: 6,
+            textColor: [40, 40, 40],
+            lineColor: [225, 225, 225],
+            lineWidth: 0.8,
+          },
+          headStyles: {
+            fillColor: navyRgb,
+            textColor: [255, 255, 255],
+            fontStyle: "bold",
+          },
+          alternateRowStyles: { fillColor: [248, 250, 252] },
+          columnStyles: {
+            2: { halign: "right" }, // Amount
+          },
+          didDrawPage: () => {
+            drawHeader({ monthLabel: `Month: ${month}` });
+            drawFooter();
+          },
         });
+  
+        if (!body.length) {
+          const y = Math.max(startTableY + 34, doc.lastAutoTable?.finalY + 18 || startTableY + 60);
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(10);
+          doc.setTextColor(110, 110, 110);
+          doc.text("No records for this month.", marginX, y);
+        }
       });
   
+      if (typeof doc.putTotalPages === "function") doc.putTotalPages(totalPagesExp);
       doc.save("financial_records.pdf");
     } catch (err) {
       console.error("PDF export failed:", err);
       alert("PDF export failed. Check console for details.");
     }
   }
+  
+      
 
   // UI components inside this file (can be moved to separate files later)
   const ToggleFiltersButton = ({ onClick, open }) => (
