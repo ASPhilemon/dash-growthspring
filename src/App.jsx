@@ -49,6 +49,7 @@ function AnimatedRoutes() {
 
         {/* Member routes */}
         <Route element={<MemberLayout />}>
+          <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<PageFade><MemberDashboard /></PageFade>} />
           <Route path="/temporary-savings" element={<PageFade><SavingsDashboard /></PageFade>} />
           <Route path="/loans" element={<PageFade><LoansDetailsPage /></PageFade>} />
