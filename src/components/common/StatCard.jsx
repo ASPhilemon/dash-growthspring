@@ -12,7 +12,7 @@ const statCardBase = {
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  padding: "3vh 5vh",
+  padding: "3vh 4vh",
   flexShrink: 0, // still needed for mobile scroll
 };
 

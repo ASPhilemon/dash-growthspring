@@ -92,7 +92,7 @@ function BaseDetailsPage({ pageName, statTitle, statValue, overviewGroup, tableH
 
     // Calculate total
     const totalValue = transactionsForYear.reduce((sum, t) => {
-        const value = statTitle !== "Your Debt" ? t.amount : t.loanAmount;
+        const value = statTitle !== "Your Debt" ? t.amount : t.amountLeft;
         if (typeof value === 'string' && value.startsWith('UGX')) {
             return sum + parseInt(value.replace(/UGX |,/g, ""));
         }

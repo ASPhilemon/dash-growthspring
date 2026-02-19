@@ -8,7 +8,7 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [auth, setAuth] = useState({
     userId: "658fbda97695ba5ae6b937b5", // replace if needed
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NThmYmRhODc2OTViYTVhZTZiOTM3YjEiLCJmdWxsTmFtZSI6IkFyaWtvIFN0ZXBoZW4gUGhpbGVtb24iLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3NTg2MTgxNzAsImV4cCI6MTc2MjA3NDE3MH0.eGSI4CHRDYNnKQMx7y8kPNSljwBe1sS9vIPiJ3_3CLA"  });
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NThmYmRhODc2OTViYTVhZTZiOTM3YjIiLCJmdWxsTmFtZSI6Ik13ZWJlIEJsYWlzZSBBZHJpYW4iLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3NzE0NDU5MDMsImV4cCI6MTc3NDkwMTkwM30.NnukDGIXsLfS_LqSTq9L3i03xBxWvCduxCQK8senyDE"  });
 
   const value = useMemo(
     () => ({
